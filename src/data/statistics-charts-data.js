@@ -1,4 +1,8 @@
 import { chartsConfig } from "@/configs";
+import { numbers } from "./export";
+import { numbers2 } from "./export";
+
+//let numbers = data1.js
 
 const websiteViewsChart = {
   type: "bar",
@@ -6,7 +10,7 @@ const websiteViewsChart = {
   series: [
     {
       name: "Views",
-      data: [50, 20, 10, 22, 50, 10, 40],
+      data: numbers,
     },
   ],
   options: {
@@ -31,7 +35,7 @@ const dailySalesChart = {
   series: [
     {
       name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+      data: numbers2,
     },
   ],
   options: {
@@ -41,12 +45,12 @@ const dailySalesChart = {
       lineCap: "round",
     },
     markers: {
-      size: 5,
+      size: 4,
     },
     xaxis: {
       ...chartsConfig.xaxis,
       categories: [
-        "Apr",
+        "April",
         "May",
         "Jun",
         "Jul",
@@ -65,6 +69,7 @@ const completedTaskChart = {
   height: 220,
   series: [
     {
+
       name: "Sales",
       data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
     },

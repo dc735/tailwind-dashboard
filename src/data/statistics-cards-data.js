@@ -10,7 +10,7 @@ export const statisticsCardsData = [
     color: "gray",
     icon: BanknotesIcon,
     title: "Today's Money",
-    value: "$53k",
+    value: "$530k",
     footer: {
       color: "text-green-500",
       value: "+55%",
