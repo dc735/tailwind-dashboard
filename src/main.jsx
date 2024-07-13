@@ -16,11 +16,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
 import "../public/css/tailwind.css";
-// import * as fs from 'fs';
-import output from './data/data1.txt';
-// var output = fs.readFileSync('./data/data1.txt')
-export let my_txt = output;
-// export let output = fs.readFileSync('data1.js')
+
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
