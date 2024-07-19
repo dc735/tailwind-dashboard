@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -22,10 +23,26 @@ import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
 
+
+
 export function Profile() {
+  const [message, setMessage] = useState('');
+
+  const handleClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/endpoint');
+      const data = await response.text();
+      setMessage(data);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Error calling Go application');
+    }
+  };
+
+
   return (
     <>
-      <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
+      <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover bg-center">
         <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
       </div>
       <Card className="mx-3 -mt-16 mb-6 lg:mx-4 border border-blue-gray-100">
@@ -54,7 +71,7 @@ export function Profile() {
             <div className="w-96">
               <Tabs value="app">
                 <TabsHeader>
-                  <Tab value="app">
+                  <Tab value="app" onClick={handleClick}>
                     <HomeIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
                     App
                   </Tab>
@@ -70,6 +87,11 @@ export function Profile() {
               </Tabs>
             </div>
           </div>
+          {message && (
+            <div className="mb-4 text-green-600">
+              {message}
+            </div>
+          )}
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
             <div>
               <Typography variant="h6" color="blue-gray" className="mb-3">
