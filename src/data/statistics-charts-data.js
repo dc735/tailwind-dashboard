@@ -1,6 +1,6 @@
 import { chartsConfig } from "@/configs";
-import { numbers } from "./export";
-import { numbers2 } from "./export";
+import { maxWind } from "./export";
+import { avgWind } from "./export";
 
 //let numbers = data1.js
 
@@ -10,7 +10,7 @@ const websiteViewsChart = {
   series: [
     {
       name: "Views",
-      data: numbers,
+      data: maxWind,
     },
   ],
   options: {
@@ -35,7 +35,7 @@ const dailySalesChart = {
   series: [
     {
       name: "Sales",
-      data: numbers2,
+      data: avgWind,
     },
   ],
   options: {

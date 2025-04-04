@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -22,20 +22,77 @@ import {
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
+const FetchDataComponent = () => {
+  const [maxWind, setMaxWind] = useState([]);
+  const [avgWind, setAvgWind] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = 'https://api.weather.com/v2/pws/observations/all/1day?stationId=IKERIK69&format=json&units=m&apiKey=760b40f7a5984c808b40f7a598cc8075';
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
 
+        const maxWindData = data.observations.map(obs => obs.metric.windgustHigh);
+        const avgWindData = data.observations.map(obs => obs.metric.windspeedAvg);
+
+        setMaxWind(maxWindData);
+        setAvgWind(avgWindData);
+
+        // Sending data to the server to update the file
+        await fetch('/update-file', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ maxWind: maxWindData, avgWind: avgWindData }),
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <h1>Wind Data</h1>
+      <h2>Max Wind: {maxWind.join(', ')}</h2>
+      <h2>Avg Wind: {avgWind.join(', ')}</h2>
+    </div>
+  );
+};
+
+export default FetchDataComponent;
 
 export function Profile() {
   const [message, setMessage] = useState('');
+  const [numbers, setNumbers] = useState([]);
 
   const handleClick = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/endpoint');
-      const data = await response.text();
-      setMessage(data);
+      const response = await fetch(url);
+      const data = await response.json();
+
+      // Extract the needed values from the JSON
+      const maxWind = data.observations.map(obs => obs.metric.windgustHigh);
+      const avgWind = data.observations.map(obs => obs.metric.windspeedAvg);
+
+      // Prepare the export content
+      const exportContent = `
+  export let maxWind;
+  export let avgWind;
+  maxWind = ${JSON.stringify(maxWind)};
+  avgWind = ${JSON.stringify(avgWind)};
+  `;
+
+      // Write to the export.js file
+      fs.writeFileSync('export.js', exportContent);
+
+      console.log('export.js updated successfully!');
     } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error calling Go application');
+      console.error('Error fetching or updating data:', error);
     }
   };
 
@@ -90,6 +147,11 @@ export function Profile() {
           {message && (
             <div className="mb-4 text-green-600">
               {message}
+            </div>
+          )}
+          {numbers.length > 0 && (
+            <div className="mb-4 text-blue-600">
+              {`Array of numbers: ${numbers.join(', ')}`}
             </div>
           )}
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
@@ -240,4 +302,4 @@ export function Profile() {
   );
 }
 
-export default Profile;
+// export default Profile;
